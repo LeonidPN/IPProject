@@ -31,6 +31,6 @@ namespace IPProject.Models
         public int CategoryId { get; set; }
 
         [DataMember]
-        public string UserLogin { get; set; }
+        public int UserId { get; set; }
     }
 }

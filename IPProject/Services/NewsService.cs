@@ -10,14 +10,17 @@ namespace IPProject.Services
 {
     public class NewsService
     {
-        private readonly string save = "";
+        private readonly string save;
 
-        private readonly string dir = "";
+        private readonly string dir;
+
+        private readonly DBContext context;
 
         public NewsService()
         {
             save = ConfigurationManager.AppSettings["Saving"];
             dir = ConfigurationManager.AppSettings["Dir"];
+            context = new DBContext();
         }
 
         public void Add(News news)
@@ -41,10 +44,33 @@ namespace IPProject.Services
                     CategoryId = news.CategoryId,
                     DateCreate = DateTime.Now,
                     NumberOfViews = 0,
-                    UserLogin = news.UserLogin
+                    UserId = news.UserId
                 });
                 Serialize(list);
+                return;
             }
+            else if (save.Equals("db"))
+            {
+                News element = context.News.FirstOrDefault(rec => rec.Title == news.Title);
+                if (element != null)
+                {
+                    throw new Exception("Уже есть такая новость");
+                }
+                context.News.Add(new News
+                {
+                    Description = news.Description,
+                    ImageUrl = news.ImageUrl,
+                    Title = news.Title,
+                    Body = news.Body,
+                    CategoryId = news.CategoryId,
+                    DateCreate = DateTime.Now,
+                    NumberOfViews = 0,
+                    UserId = news.UserId
+                });
+                context.SaveChanges();
+                return;
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public List<News> GetList()
@@ -53,8 +79,25 @@ namespace IPProject.Services
             if (save.Equals("file"))
             {
                 res = Deserialize();
+                return res;
             }
-            return res;
+            else if (save.Equals("db"))
+            {
+                res = context.News.Select(rec => new News
+                {
+                    Id = rec.Id,
+                    Description = rec.Description,
+                    ImageUrl = rec.ImageUrl,
+                    Title = rec.Title,
+                    Body = rec.Body,
+                    CategoryId = rec.CategoryId,
+                    DateCreate = rec.DateCreate,
+                    NumberOfViews = rec.NumberOfViews,
+                    UserId = rec.UserId
+                }).ToList();
+                return res;
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public News GetElement(int id)
@@ -68,7 +111,7 @@ namespace IPProject.Services
                     return new News
                     {
                         Id = element.Id,
-                        UserLogin = element.UserLogin,
+                        UserId = element.UserId,
                         NumberOfViews = element.NumberOfViews,
                         DateCreate = element.DateCreate,
                         CategoryId = element.CategoryId,
@@ -78,8 +121,29 @@ namespace IPProject.Services
                         Title = element.Title
                     };
                 }
+                throw new Exception("Элемент не найден");
             }
-            throw new Exception("Элемент не найден");
+            else if (save.Equals("db"))
+            {
+                News element = context.News.FirstOrDefault(rec => rec.Id == id);
+                if (element != null)
+                {
+                    return new News
+                    {
+                        Id = element.Id,
+                        UserId = element.UserId,
+                        NumberOfViews = element.NumberOfViews,
+                        DateCreate = element.DateCreate,
+                        CategoryId = element.CategoryId,
+                        Body = element.Body,
+                        Description = element.Description,
+                        ImageUrl = element.ImageUrl,
+                        Title = element.Title
+                    };
+                }
+                throw new Exception("Элемент не найден");
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public List<News> GetListByCategory(int categoryId)
@@ -98,10 +162,27 @@ namespace IPProject.Services
                     CategoryId = rec.CategoryId,
                     DateCreate = rec.DateCreate,
                     NumberOfViews = rec.NumberOfViews,
-                    UserLogin = rec.UserLogin
+                    UserId = rec.UserId
                 }).Where(rec => rec.CategoryId == categoryId).ToList();
+                return res;
             }
-            return res;
+            else if (save.Equals("db"))
+            {
+                res = context.News.Select(rec => new News
+                {
+                    Id = rec.Id,
+                    Description = rec.Description,
+                    ImageUrl = rec.ImageUrl,
+                    Title = rec.Title,
+                    Body = rec.Body,
+                    CategoryId = rec.CategoryId,
+                    DateCreate = rec.DateCreate,
+                    NumberOfViews = rec.NumberOfViews,
+                    UserId = rec.UserId
+                }).Where(rec => rec.CategoryId == categoryId).ToList();
+                return res;
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public void UpdElement(News model)
@@ -126,9 +207,34 @@ namespace IPProject.Services
                 element.CategoryId = model.CategoryId;
                 element.DateCreate = model.DateCreate;
                 element.NumberOfViews = model.NumberOfViews;
-                element.UserLogin = model.UserLogin;
+                element.UserId = model.UserId;
                 Serialize(list);
+                return;
             }
+            else if (save.Equals("db"))
+            {
+                News element = context.News.FirstOrDefault(rec => rec.Id != model.Id && rec.Title == model.Title);
+                if (element != null)
+                {
+                    throw new Exception("Уже есть такая новость");
+                }
+                element = context.News.FirstOrDefault(rec => rec.Id == model.Id);
+                if (element == null)
+                {
+                    throw new Exception("Элемент не найден");
+                }
+                element.Title = model.Title;
+                element.ImageUrl = model.ImageUrl;
+                element.Description = model.Description;
+                element.Body = model.Body;
+                element.CategoryId = model.CategoryId;
+                element.DateCreate = model.DateCreate;
+                element.NumberOfViews = model.NumberOfViews;
+                element.UserId = model.UserId;
+                context.SaveChanges();
+                return;
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public void DelElement(int id)
@@ -146,7 +252,23 @@ namespace IPProject.Services
                     list.Remove(element);
                     Serialize(list);
                 }
+                return;
             }
+            else if (save.Equals("db"))
+            {
+                News element = context.News.FirstOrDefault(rec => rec.Id == id);
+                if (element == null)
+                {
+                    throw new Exception("Элемент не найден");
+                }
+                else
+                {
+                    context.News.Remove(element);
+                    context.SaveChanges();
+                }
+                return;
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         public List<News> GetInteresting()

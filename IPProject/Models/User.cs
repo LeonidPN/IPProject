@@ -6,6 +6,9 @@ namespace IPProject.Models
     public class User
     {
         [DataMember]
+        public int Id { get; set; }
+
+        [DataMember]
         public string Login { get; set; }
 
         [DataMember]
