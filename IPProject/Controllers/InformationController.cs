@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using IPProject.Services;
 using System.Web.Mvc;
 
 namespace IPProject.Controllers
@@ -18,6 +15,14 @@ namespace IPProject.Controllers
         public ActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        public void Contact(string name, string email, string message)
+        {
+            MailService service = new MailService();
+            service.SendEmail(name, email, message);
+            Redirect("/Information/Contact");
         }
     }
 }

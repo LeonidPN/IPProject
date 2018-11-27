@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_LayoutAuthorization.cshtml";
+}
+
+@{
+    ViewBag.Title = "Авторизация";
+}
+
+<div class="add_body">
+    <form action="/Home/Authorization" method="post" class="add">
+        <div class="form_div">
+            <p>
+                Логин
+            </p>
+            <input type="text" name="login" class="input_text_email">
+        </div>
+        <div class="form_div">
+            <p>
+                Пароль
+            </p>
+            <input type="password" name="pass" class="input_text_email">
+        </div>
+        <div class="form_div">
+            <input type="submit" value="Войти">
+        </div>
+    </form>
+</div>

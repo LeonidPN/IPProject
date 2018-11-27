@@ -88,12 +88,12 @@ namespace IPProject.Services
             throw new Exception("Хранилище данных неопределено");
         }
 
-        public User GetElement(string login)
+        public User GetElement(int id)
         {
             if (save.Equals("file"))
             {
                 List<User> list = Deserialize();
-                User element = list.FirstOrDefault(rec => rec.Login == login);
+                User element = list.FirstOrDefault(rec => rec.Id == id);
                 if (element != null)
                 {
                     return new User
@@ -109,7 +109,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Login == login);
+                User element = context.User.FirstOrDefault(rec => rec.Id == id);
                 if (element != null)
                 {
                     return new User

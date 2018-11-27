@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_LayoutRedaction.cshtml";
+}
+
+@{
+    ViewBag.Title = "Добавление категории";
+}
+
+<div class="add_body">
+    <form action="/IP/AddViews/category_add" method="post" class="add" enctype="multipart/form-data">
+        <input type="hidden" value="@ViewBag.Id" name="Id">
+        <div class="form_div">
+            <p>
+                Название
+            </p>
+            <input type="text" name="title" class="input_title" value="@ViewBag.Title">
+        </div>
+        <div class="form_div">
+            <p>
+                Описание
+            </p>
+            <textarea class="input_text" name="desc">@ViewBag.Description</textarea>
+        </div>
+        <div class="form_div">
+            <p>
+                Изображение
+            </p>
+            <input type="file" name="image" accept=".jpeg,jpg">
+        </div>
+        <div class="form_div">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+</div>

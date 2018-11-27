@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_LayoutRedaction.cshtml";
+}
+
+@{
+    ViewBag.Title = "Добавление новости";
+}
+
+<div class="add_body">
+    <form action="/IP/AddViews/news_add" method="POST" class="add" enctype="multipart/form-data">
+        <input type="hidden" value="@ViewBag.Id" name="Id">
+        <div class="form_div">
+            <p>
+                Категория
+            </p>
+            @foreach (var c in ViewBag.Category)
+            {
+                <input type="radio" name="role" value="@c.Id">@c.Title
+                <br>
+            }
+        </div>
+        <div class="form_div">
+            <p>
+                Заголовок
+            </p>
+            <input type="text" name="title" class="input_title" value="@ViewBag.Title">
+        </div>
+        <div class="form_div">
+            <p>
+                Краткое описание
+            </p>
+            <textarea class="input_text" name="shortDesc">@ViewBag.Description</textarea>
+        </div>
+        <div class="form_div">
+            <p>
+                Текст новости
+            </p>
+            <textarea class="input_text" name="body">@ViewBag.Body</textarea>
+        </div>
+        <div class="form_div">
+            <p>
+                Изображение
+            </p>
+            <input type="file" name="image" accept=".jpeg,jpg">
+        </div>
+        <div class="form_div">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+</div>

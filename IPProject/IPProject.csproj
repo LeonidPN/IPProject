@@ -127,6 +127,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\RedactionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -150,6 +151,15 @@
     <Content Include="Views\News\news.cshtml" />
     <Content Include="Views\News\newsInCategory.cshtml" />
     <Content Include="Views\Layout\_Layout.cshtml" />
+    <Content Include="Views\Home\authorization.cshtml" />
+    <Content Include="Views\Layout\_LayoutAuthorization.cshtml" />
+    <Content Include="Views\Layout\_LayoutRedaction.cshtml" />
+    <Content Include="Views\Redaction\newsList.cshtml" />
+    <Content Include="Views\Redaction\newsAdd.cshtml" />
+    <Content Include="Views\Redaction\categoryList.cshtml" />
+    <Content Include="Views\Redaction\categoryAdd.cshtml" />
+    <Content Include="Views\Redaction\userAdd.cshtml" />
+    <Content Include="Views\Redaction\userList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -371,3 +371,38 @@ iframe {
     border-color: #6c6c6c;
     border-style: solid;
 }
+
+.add_body {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: auto;
+}
+
+.add {
+    background-color: #f7f7f7;
+    margin-top: 20px;
+    width: auto;
+    height: auto;
+    border-color: #6c6c6c;
+    border-style: solid;
+}
+
+.form_div {
+    font-family: "Times New Roman", serif;
+    width: auto;
+    height: auto;
+    font-size: 18px;
+    color: #666;
+    margin: 20px;
+    text-align: left;
+}
+
+.input_title {
+    font-family: "Times New Roman", serif;
+    width: 600px;
+    height: 20px;
+    font-size: 18px;
+    color: #666;
+}

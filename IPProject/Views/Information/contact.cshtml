@@ -7,9 +7,31 @@
     ViewBag.Title = "Обратная связь";
 }
 
-<form action="#" class="contact">
-    Имя <br><input type="text" class="input_name"><br>
-    Эл. почта <br><input type="email" class="input_text_email"><br><br>
-    Сообщение <br><textarea class="input_text"></textarea><br>
-    <input type="submit" value="Отправить"> <input type="reset" value="Отмена">
-</form>
+<div class="add_body">
+    <form action="/Information/Contact" method="post" class="add">
+        <div class="form_div">
+            <p>
+                Имя
+            </p>
+            <input type="text" name="title" class="name">
+        </div>
+        <div class="form_div">
+            <p>
+                Email
+            </p>
+            <input type="email" name="title" class="email">
+        </div>
+        <div class="form_div">
+            <p>
+                Сообщение
+            </p>
+            <textarea class="input_text" name="message"></textarea>
+        </div>
+        <div class="form_div">
+            <input type="submit" value="Отправить">
+        </div>
+        <div class="form_div">
+            <input type="reset" value="Отмена">
+        </div>
+    </form>
+</div>

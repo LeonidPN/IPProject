@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="header">
+                <img src="~/Content/Images/logo.jpg" class="logo">
+                <ul class="menu">
+                    <li><a href="/Redaction/newsList">Новости</a></li>
+                    <li><a href="/Redaction/categoryList">Категории</a></li>
+                    <li><a href="/Redaction/userList">Пользователи</a></li>
+                    <li><a href="/Home/Authorization">Выход</a></li>
+                </ul>
+                <div class="text">
+                    <h1>Редактирование</h1>
+                </div>
+            </div>
+        </header>
+        @RenderBody()
+        <footer>
+            <div class="footer">
+                <div class="text">
+                    <h3>Контакты</h3>
+                    <p>132A Bridge Road Richmond VIC Australia. Talk to us on 1300 132 info@WofB.com</p>
+                    <p class="copy"><small>&copy; Все права защищены - W0fB 2018</small></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
