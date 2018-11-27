@@ -101,12 +101,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\arrowW.png" />
+    <Content Include="Content\Images\header_image.jpg" />
+    <Content Include="Content\Images\logo.jpg" />
+    <Content Include="Content\Images\news_image.png" />
+    <Content Include="Content\Images\technology_image.jpg" />
+    <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InformationController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -115,6 +124,13 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <None Include="packages.config" />
+    <Content Include="Views\Home\index.cshtml" />
+    <Content Include="Views\Information\about.cshtml" />
+    <Content Include="Views\Information\contact.cshtml" />
+    <Content Include="Views\News\interesting.cshtml" />
+    <Content Include="Views\News\news.cshtml" />
+    <Content Include="Views\News\newsInCategory.cshtml" />
+    <Content Include="Views\Layout\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -124,7 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
