@@ -7,4 +7,22 @@
     ViewBag.Title = "Список пользователей";
 }
 
-
+<form action="/Redaction/UserList" method="post" class="add">
+    <div class="form_div">
+        <input type="submit" value="Добавить нового пользователя">
+    </div>
+</form>
+@if (ViewBag.User != null)
+{
+    foreach (var u in ViewBag.User)
+    {
+        <form action="/Redaction/UserList" method="post" class="add">
+            <input type="hidden" value="@u.Id" name="id">
+            <div class="form_div">
+                <p>Логин: @u.Login</p>
+                <input type="submit" value="Изменить" name="button">
+                <input type="submit" value="Удалить" name="button">
+            </div>
+        </form>
+    }
+}

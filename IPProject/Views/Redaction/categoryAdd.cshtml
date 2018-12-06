@@ -4,12 +4,12 @@
 }
 
 @{
-    ViewBag.Title = "Добавление категории";
+    ViewBag.Title1 = "Добавление категории";
 }
 
 <div class="add_body">
-    <form action="/IP/AddViews/category_add" method="post" class="add" enctype="multipart/form-data">
-        <input type="hidden" value="@ViewBag.Id" name="Id">
+    <form action="/Redaction/CategoryAdd" method="post" class="add" enctype="multipart/form-data">
+        <input type="hidden" value="@ViewBag.Id" name="id">
         <div class="form_div">
             <p>
                 Название

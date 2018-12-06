@@ -16,10 +16,10 @@ namespace IPProject.Services
 
         private readonly DBContext context;
 
-        public CategoryService()
+        public CategoryService(string path)
         {
             save = ConfigurationManager.AppSettings["Saving"];
-            dir = ConfigurationManager.AppSettings["Dir"];
+            dir = path;
             context = new DBContext();
         }
 
@@ -46,12 +46,12 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                Category element = context.Category.FirstOrDefault(rec => rec.Title == category.Title);
+                Category element = context.Categories.FirstOrDefault(rec => rec.Title == category.Title);
                 if (element != null)
                 {
                     throw new Exception("Уже есть такая категория");
                 }
-                context.Category.Add(new Category
+                context.Categories.Add(new Category
                 {
                     Description = category.Description,
                     ImageUrl = category.ImageUrl,
@@ -73,7 +73,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                res = context.Category.Select(rec => new Category
+                res = context.Categories.AsEnumerable().Select(rec => new Category
                 {
                     Id = rec.Id,
                     Description = rec.Description,
@@ -105,7 +105,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                Category element = context.Category.FirstOrDefault(rec => rec.Id == id);
+                Category element = context.Categories.FirstOrDefault(rec => rec.Id == id);
                 if (element != null)
                 {
                     return new Category
@@ -137,19 +137,22 @@ namespace IPProject.Services
                     throw new Exception("Элемент не найден");
                 }
                 element.Title = model.Title;
-                element.ImageUrl = model.ImageUrl;
+                if (model.ImageUrl != null)
+                {
+                    element.ImageUrl = model.ImageUrl;
+                }
                 element.Description = model.Description;
                 Serialize(list);
                 return;
             }
             else if (save.Equals("db"))
             {
-                Category element = context.Category.FirstOrDefault(rec => rec.Id != model.Id && rec.Title == model.Title);
+                Category element = context.Categories.FirstOrDefault(rec => rec.Id != model.Id && rec.Title == model.Title);
                 if (element != null)
                 {
                     throw new Exception("Уже есть такая категория");
                 }
-                element = context.Category.FirstOrDefault(rec => rec.Id == model.Id);
+                element = context.Categories.FirstOrDefault(rec => rec.Id == model.Id);
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
@@ -168,6 +171,14 @@ namespace IPProject.Services
             if (save.Equals("file"))
             {
                 List<Category> list = Deserialize();
+                List<News> listN = DeserializeNews();
+                List<News> n = listN.AsEnumerable().Select(rec => new News
+                {
+                }).Where(rec => rec.CategoryId == id).ToList();
+                if (n.Count > 0)
+                {
+                    throw new Exception("Невозможно удалить");
+                }
                 Category element = list.FirstOrDefault(rec => rec.Id == id);
                 if (element == null)
                 {
@@ -182,14 +193,21 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                Category element = context.Category.FirstOrDefault(rec => rec.Id == id);
+                Category element = context.Categories.FirstOrDefault(rec => rec.Id == id);
+                List<News> n = context.News.AsEnumerable().Select(rec => new News
+                {
+                }).Where(rec => rec.CategoryId == id).ToList();
+                if (n.Count > 0)
+                {
+                    throw new Exception("Невозможно удалить");
+                }
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
                 }
                 else
                 {
-                    context.Category.Remove(element);
+                    context.Categories.Remove(element);
                     context.SaveChanges();
                 }
                 return;
@@ -213,6 +231,17 @@ namespace IPProject.Services
             using (FileStream fs = new FileStream(dir + "category.json", FileMode.OpenOrCreate))
             {
                 res = (List<Category>)jsonFormatter.ReadObject(fs);
+            }
+            return res;
+        }
+
+        private List<News> DeserializeNews()
+        {
+            List<News> res = new List<News>();
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<News>));
+            using (FileStream fs = new FileStream(dir + "news.json", FileMode.OpenOrCreate))
+            {
+                res = (List<News>)jsonFormatter.ReadObject(fs);
             }
             return res;
         }

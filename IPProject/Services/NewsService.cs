@@ -16,10 +16,10 @@ namespace IPProject.Services
 
         private readonly DBContext context;
 
-        public NewsService()
+        public NewsService(string path)
         {
             save = ConfigurationManager.AppSettings["Saving"];
-            dir = ConfigurationManager.AppSettings["Dir"];
+            dir = path;
             context = new DBContext();
         }
 
@@ -83,7 +83,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                res = context.News.Select(rec => new News
+                res = context.News.AsEnumerable().Select(rec => new News
                 {
                     Id = rec.Id,
                     Description = rec.Description,
@@ -152,7 +152,7 @@ namespace IPProject.Services
             if (save.Equals("file"))
             {
                 List<News> list = Deserialize();
-                res = list.Select(rec => new News
+                res = list.AsEnumerable().Select(rec => new News
                 {
                     Id = rec.Id,
                     Title = rec.Title,
@@ -168,7 +168,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                res = context.News.Select(rec => new News
+                res = context.News.AsEnumerable().Select(rec => new News
                 {
                     Id = rec.Id,
                     Description = rec.Description,
@@ -201,7 +201,10 @@ namespace IPProject.Services
                     throw new Exception("Элемент не найден");
                 }
                 element.Title = model.Title;
-                element.ImageUrl = model.ImageUrl;
+                if (model.ImageUrl != null)
+                {
+                    element.ImageUrl = model.ImageUrl;
+                }
                 element.Description = model.Description;
                 element.Body = model.Body;
                 element.CategoryId = model.CategoryId;
@@ -285,8 +288,60 @@ namespace IPProject.Services
                         res.Add(list[i]);
                     }
                 }
+                return res;
             }
-            return res;
+            else if (save.Equals("db"))
+            {
+                List<News> list = context.News.AsEnumerable().Select(rec => new News
+                {
+                    Id = rec.Id,
+                    Description = rec.Description,
+                    ImageUrl = rec.ImageUrl,
+                    Title = rec.Title,
+                    Body = rec.Body,
+                    CategoryId = rec.CategoryId,
+                    DateCreate = rec.DateCreate,
+                    NumberOfViews = rec.NumberOfViews,
+                    UserId = rec.UserId
+                }).ToList();
+                Random r = new Random();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (r.Next(0, 99) > 50)
+                    {
+                        res.Add(list[i]);
+                    }
+                }
+                return res;
+            }
+            throw new Exception("Хранилище данных неопределено");
+        }
+
+        public void IncreaseViews(int id)
+        {
+            if (save.Equals("file"))
+            {
+                List<News> list = Deserialize();
+                News element = list.FirstOrDefault(rec => rec.Id == id);
+                if (element != null)
+                {
+                    element.NumberOfViews++;
+                    Serialize(list);
+                    return;
+                }
+                throw new Exception("Элемент не найден");
+            }
+            else if (save.Equals("db"))
+            {
+                News element = context.News.FirstOrDefault(rec => rec.Id == id);
+                if (element != null)
+                {
+                    element.NumberOfViews++;
+                    return;
+                }
+                throw new Exception("Элемент не найден");
+            }
+            throw new Exception("Хранилище данных неопределено");
         }
 
         private void Serialize(List<News> list)

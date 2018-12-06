@@ -7,11 +7,18 @@
     ViewBag.Title = "Главная страница";
 }
 
-<div class="main_theme">
-    <h2>Технологии</h2>
-    <img src="~/Content/Images/technology_image.jpg">
-    <p>
-        Раздел о технологиях
-    </p>
-    <div class="main_theme_go"><a href="/News/NewsInCategory">Перейти к разделу</a></div>
-</div>
+@if (ViewBag.Categories != null)
+{
+    foreach (var c in ViewBag.Categories)
+    {
+        <div class="main_theme">
+            <h2>@c.Title</h2>
+            <img src="~/Content/Upload/Images/@c.ImageUrl">
+            <p>
+                @c.Description
+            </p>
+            <div class="main_theme_go"><a href="/News/NewsInCategory/@c.Id">Перейти к разделу</a></div>
+        </div>
+    }
+}
+

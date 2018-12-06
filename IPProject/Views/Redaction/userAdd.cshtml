@@ -8,8 +8,8 @@
 }
 
 <div class="add_body">
-    <form action="/IP/AddViews/user_add" method="POST" class="add">
-        <input type="hidden" value="@ViewBag.Id" name="Id">
+    <form action="/Redaction/UserAdd" method="POST" class="add">
+        <input type="hidden" value="@ViewBag.Id" name="id">
         <div class="form_div">
             <p>
                 Логин
@@ -20,19 +20,19 @@
             <p>
                 Пароль
             </p>
-            <input type="password" name="pass" class="input_title" value="ViewBag.Password">
+            <input type="password" name="pass" class="input_title" value="@ViewBag.Password">
         </div>
         <div class="form_div">
             <p>
                 Имя
             </p>
-            <input type="text" name="firstname" class="input_title" value="ViewBag.FirstName">
+            <input type="text" name="firstname" class="input_title" value="@ViewBag.FirstName">
         </div>
         <div class="form_div">
             <p>
                 Фамилия
             </p>
-            <input type="text" name="lastname" class="input_title" value="ViewBag.LastName">
+            <input type="text" name="lastname" class="input_title" value="@ViewBag.LastName">
         </div>
         <div class="form_div">
             <input type="submit" value="Отправить">

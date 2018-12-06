@@ -1,8 +1,7 @@
-﻿using IPProject.Services;
+﻿using IPProject.Models;
+using IPProject.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace IPProject.Controllers
@@ -12,6 +11,23 @@ namespace IPProject.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            try
+            {
+                CategoryService service = new CategoryService(Server.MapPath("~/Content/Upload/Entities/"));
+                List<Category> categories = service.GetList();
+                ViewBag.Categories = categories;
+            }
+            catch (Exception ex)
+            {
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
+            }
             return View();
         }
 
@@ -23,21 +39,29 @@ namespace IPProject.Controllers
         }
 
         [HttpPost]
-        public void Authorization(string login, string pass)
+        public ActionResult Authorization(string login, string pass)
         {
             try
             {
-                UserService service = new UserService();
+                UserService service = new UserService(Server.MapPath("~/Content/Upload/Entities/"));
                 if (service.Authorization(login, pass) != null)
                 {
                     Session.Add("userId", service.Authorization(login, pass).Id);
-                    Redirect("/Redaction/NewsList");
+                    return Redirect("/Redaction/NewsList");
                 }
             }
             catch (Exception ex)
             {
-                Redirect("/Home/Authorization");
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
             }
+            return Redirect("/Home/Authorization");
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using IPProject.Services;
+using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace IPProject.Controllers
@@ -12,17 +14,34 @@ namespace IPProject.Controllers
         }
 
         [HttpGet]
+        [ValidateInput(false)]
         public ActionResult Contact()
         {
+            ValidateRequest = false;
             return View();
         }
 
         [HttpPost]
-        public void Contact(string name, string email, string message)
+        [ValidateInput(false)]
+        public async Task<ActionResult> Contact(string name, string email, string message)
         {
-            MailService service = new MailService();
-            service.SendEmail(name, email, message);
-            Redirect("/Information/Contact");
+            try
+            {
+                MailService service = new MailService();
+                await service.SendEmail(name, email, message);
+                return Redirect("/Information/Contact");
+            }
+            catch (Exception ex)
+            {
+                string message1 = "";
+                while (ex != null)
+                {
+                    message1 = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message1 = message1.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message1 + "&href=" + Request.Url);
+            }
         }
     }
 }

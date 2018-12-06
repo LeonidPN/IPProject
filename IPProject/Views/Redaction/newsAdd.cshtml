@@ -4,20 +4,25 @@
 }
 
 @{
-    ViewBag.Title = "Добавление новости";
+    ViewBag.Title1 = "Добавление новости";
 }
 
 <div class="add_body">
-    <form action="/IP/AddViews/news_add" method="POST" class="add" enctype="multipart/form-data">
-        <input type="hidden" value="@ViewBag.Id" name="Id">
+    <form action="/Redaction/NewsAdd" method="POST" class="add" enctype="multipart/form-data">
+        <input type="hidden" value="@ViewBag.Id" name="id">
+        <input type="hidden" value="@ViewBag.DateCreate" name="date">
+        <input type="hidden" value="@ViewBag.NumberOfViews" name="views">
         <div class="form_div">
             <p>
                 Категория
             </p>
-            @foreach (var c in ViewBag.Category)
+            @if (ViewBag.Category != null)
             {
-                <input type="radio" name="role" value="@c.Id">@c.Title
-                <br>
+                foreach (var c in ViewBag.Category)
+                {
+                    <input type="radio" name="category" value="@c.Id">@c.Title
+                    <br>
+                }
             }
         </div>
         <div class="form_div">

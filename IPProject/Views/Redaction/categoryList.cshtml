@@ -7,4 +7,22 @@
     ViewBag.Title = "Список категорий";
 }
 
-
+<form action="/Redaction/CategoryList" method="post" class="add">
+    <div class="form_div">
+        <input type="submit" value="Добавить новую категорию">
+    </div>
+</form>
+@if (ViewBag.Category != null)
+{
+    foreach (var c in ViewBag.Category)
+    {
+        <form action="/Redaction/CategoryList" method="post" class="add">
+            <input type="hidden" value="@c.Id" name="id">
+            <div class="form_div">
+                <p>Название: @c.Title</p>
+                <input type="submit" value="Изменить" name="button">
+                <input type="submit" value="Удалить" name="button">
+            </div>
+        </form>
+    }
+}

@@ -16,10 +16,10 @@ namespace IPProject.Services
 
         private readonly DBContext context;
 
-        public UserService()
+        public UserService(string path)
         {
             save = ConfigurationManager.AppSettings["Saving"];
-            dir = ConfigurationManager.AppSettings["Dir"];
+            dir = path;
             context = new DBContext();
         }
 
@@ -47,12 +47,12 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Login == user.Login);
+                User element = context.Users.FirstOrDefault(rec => rec.Login == user.Login);
                 if (element != null)
                 {
                     throw new Exception("Уже есть такой пользователь");
                 }
-                context.User.Add(new User
+                context.Users.Add(new User
                 {
                     Login = user.Login,
                     FirstName = user.FirstName,
@@ -75,7 +75,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                res = context.User.Select(rec => new User
+                res = context.Users.AsEnumerable().Select(rec => new User
                 {
                     Id = rec.Id,
                     Login = rec.Login,
@@ -109,7 +109,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Id == id);
+                User element = context.Users.FirstOrDefault(rec => rec.Id == id);
                 if (element != null)
                 {
                     return new User
@@ -144,7 +144,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Login == model.Login);
+                User element = context.Users.FirstOrDefault(rec => rec.Login == model.Login);
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
@@ -158,12 +158,20 @@ namespace IPProject.Services
             throw new Exception("Хранилище данных неопределено");
         }
 
-        public void DelElement(string login)
+        public void DelElement(int id)
         {
             if (save.Equals("file"))
             {
                 List<User> list = Deserialize();
-                User element = list.FirstOrDefault(rec => rec.Login == login);
+                List<News> listN = DeserializeNews();
+                List<News> n = listN.AsEnumerable().Select(rec => new News
+                {
+                }).Where(rec => rec.UserId == id).ToList();
+                if (n.Count > 0)
+                {
+                    throw new Exception("Невозможно удалить");
+                }
+                User element = list.FirstOrDefault(rec => rec.Id == id);
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
@@ -177,14 +185,21 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Login == login);
+                User element = context.Users.FirstOrDefault(rec => rec.Id == id);
+                List<News> n = context.News.AsEnumerable().Select(rec => new News
+                {
+                }).Where(rec => rec.UserId == id).ToList();
+                if (n.Count > 0)
+                {
+                    throw new Exception("Невозможно удалить");
+                }
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
                 }
                 else
                 {
-                    context.User.Remove(element);
+                    context.Users.Remove(element);
                     context.SaveChanges();
                 }
                 return;
@@ -212,7 +227,7 @@ namespace IPProject.Services
             }
             else if (save.Equals("db"))
             {
-                User element = context.User.FirstOrDefault(rec => rec.Login == login && rec.Password == password);
+                User element = context.Users.FirstOrDefault(rec => rec.Login == login && rec.Password == password);
                 if (element == null)
                 {
                     throw new Exception("Логин или пароль неверный");
@@ -244,6 +259,17 @@ namespace IPProject.Services
             using (FileStream fs = new FileStream(dir + "user.json", FileMode.OpenOrCreate))
             {
                 res = (List<User>)jsonFormatter.ReadObject(fs);
+            }
+            return res;
+        }
+
+        private List<News> DeserializeNews()
+        {
+            List<News> res = new List<News>();
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<News>));
+            using (FileStream fs = new FileStream(dir + "news.json", FileMode.OpenOrCreate))
+            {
+                res = (List<News>)jsonFormatter.ReadObject(fs);
             }
             return res;
         }

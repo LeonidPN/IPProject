@@ -349,13 +349,12 @@ iframe {
     height: 400px;
     font-size: 18px;
     color: #666;
-    text-transform: capitalize;
     margin: 20px;
     text-align: left;
 }
 
 .input_text_email {
-    font-family: "Arial", serif;
+    font-family: "Times New Roman",Helvetica, serif;
     width: 200px;
     height: 20px;
     font-size: 18px;

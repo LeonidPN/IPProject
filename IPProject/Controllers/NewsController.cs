@@ -1,7 +1,7 @@
-﻿using System;
+﻿using IPProject.Models;
+using IPProject.Services;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace IPProject.Controllers
@@ -11,18 +11,80 @@ namespace IPProject.Controllers
         [HttpGet]
         public ActionResult Interesting()
         {
+            try
+            {
+                NewsService service = new NewsService(Server.MapPath("~/Content/Upload/Entities/"));
+                List<News> news = service.GetInteresting();
+                ViewBag.News = news;
+            }
+            catch (Exception ex)
+            {
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
+            }
             return View();
         }
 
         [HttpGet]
-        public ActionResult News()
+        public ActionResult News(int id)
         {
+            try
+            {
+                NewsService service = new NewsService(Server.MapPath("~/Content/Upload/Entities/"));
+                News news = service.GetElement(id);
+                string str = news.Body;
+                string[] b = str.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                List<string> n = new List<string>();
+                for (int i = 0; i < b.Length; i++)
+                {
+                    n.Add(b[i]);
+                }
+                service.IncreaseViews(id);
+                ViewBag.News = news;
+                ViewBag.Body = n;
+            }
+            catch (Exception ex)
+            {
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
+            }
             return View();
         }
 
         [HttpGet]
-        public ActionResult NewsInCategory()
+        public ActionResult NewsInCategory(int id)
         {
+            try
+            {
+                NewsService service = new NewsService(Server.MapPath("~/Content/Upload/Entities/"));
+                CategoryService serviceC = new CategoryService(Server.MapPath("~/Content/Upload/Entities/"));
+                List<News> news = service.GetListByCategory(id);
+                ViewBag.News = news;
+                ViewBag.Category = serviceC.GetElement(id).Title;
+            }
+            catch (Exception ex)
+            {
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
+            }
             return View();
         }
     }

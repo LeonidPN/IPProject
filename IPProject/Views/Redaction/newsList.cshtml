@@ -7,4 +7,23 @@
     ViewBag.Title = "Список новостей";
 }
 
-
+<form action="/Redaction/NewsList" method="post" class="add">
+    <div class="form_div">
+        <input type="submit" value="Добавить новую новость">
+    </div>
+</form>
+@if (ViewBag.News != null)
+{
+    foreach (var n in ViewBag.News)
+    {
+        <form action="/Redaction/NewsList" method="post" class="add">
+            <input type="hidden" value="@n.Id" name="id">
+            <div class="form_div">
+                <p>Дата: @n.DateCreate</p>
+                <p>Заголовок: @n.Title</p>
+                <input type="submit" value="Изменить" name="button">
+                <input type="submit" value="Удалить" name="button">
+            </div>
+        </form>
+    }
+}
