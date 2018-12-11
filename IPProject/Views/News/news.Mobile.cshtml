@@ -1,0 +1,17 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_Layout.Mobile.cshtml";
+}
+
+@{
+    ViewBag.Title = "Новость";
+}
+<div class="news_body">
+    <h2>@ViewBag.News.Title</h2>
+    <p>@ViewBag.News.DateCreate</p>
+    <img src="~/Content/Upload/Images/@ViewBag.News.ImageUrl">
+    @foreach (string n in ViewBag.Body)
+    {
+        <p>@n</p>
+    }
+</div>

@@ -1,0 +1,24 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_Layout.Mobile.cshtml";
+}
+
+@{
+    ViewBag.Title = "Самое интересное";
+}
+
+@if (ViewBag.News != null)
+{
+    foreach (var n in ViewBag.News)
+    {
+        <div class="news_interesting_item">
+            <h3>@n.Title</h3>
+            <img src="~/Content/Upload/Images/@n.ImageUrl">
+            <p>
+                @n.Description
+            </p>
+            <div class="news_item_go"><a href="/News/News/@n.Id">Подробнее</a></div>
+        </div>
+    }
+}
+

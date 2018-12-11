@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_Layout.Mobile.cshtml";
+}
+
+@{
+    ViewBag.Title = "Новости по категории";
+}
+
+<div class="news_body" id="content">
+    <h2>@ViewBag.Category</h2>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    var curPos = 0;
+    function addItems(count) {
+        var body = $('#content');
+        var max = curPos + count;
+        $.ajax('http://localhost:50472/News/AddItems?start=' + curPos + '&count=' + count + '&id=' + @ViewBag.CategoryId, {
+            success: function (data) {
+                body.append(data);
+            }
+        });
+        curPos = max;
+    }
+
+    $(function () {
+        addItems(3);
+    });
+
+    window.onscroll = function () {
+        if (document.documentElement.scrollHeight - document.documentElement.scrollTop < document.documentElement.clientHeight + 50) {
+            addItems(3);
+        }
+    }
+</script>

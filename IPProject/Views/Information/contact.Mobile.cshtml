@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = "~/Views/Layout/_Layout.Mobile.cshtml";
+}
+
+@{
+    ViewBag.Title = "Обратная связь";
+}
+
+<div class="add_body">
+    <form action="/Information/Contact" method="post" class="add">
+        <div class="form_div">
+            <p>
+                Имя
+            </p>
+            <input type="text" name="name" class="input_text_email">
+        </div>
+        <div class="form_div">
+            <p>
+                Email
+            </p>
+            <input type="email" name="email" class="input_text_email">
+        </div>
+        <div class="form_div">
+            <p>
+                Сообщение
+            </p>
+            <textarea class="input_text" name="message"></textarea>
+        </div>
+        <div class="form_div">
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+</div>

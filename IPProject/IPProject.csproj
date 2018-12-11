@@ -154,6 +154,7 @@
     <Content Include="Content\Images\arrowW.png" />
     <Content Include="Content\Images\header_image.jpg" />
     <Content Include="Content\Images\logo.jpg" />
+    <Content Include="Content\styleMobile.css" />
     <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -202,6 +203,15 @@
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\News\addItems.cshtml" />
+    <Content Include="Views\Home\index.Mobile.cshtml" />
+    <Content Include="Views\Information\about.Mobile.cshtml" />
+    <Content Include="Views\Information\contact.Mobile.cshtml" />
+    <Content Include="Views\Layout\_Layout.Mobile.cshtml" />
+    <Content Include="Views\Message\messageShow.Mobile.cshtml" />
+    <Content Include="Views\News\addItems.Mobile.cshtml" />
+    <Content Include="Views\News\interesting.Mobile.cshtml" />
+    <Content Include="Views\News\news.Mobile.cshtml" />
+    <Content Include="Views\News\newsInCategory.Mobile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
