@@ -227,7 +227,10 @@ namespace IPProject.Services
                     throw new Exception("Элемент не найден");
                 }
                 element.Title = model.Title;
-                element.ImageUrl = model.ImageUrl;
+                if (model.ImageUrl != null)
+                {
+                    element.ImageUrl = model.ImageUrl;
+                }
                 element.Description = model.Description;
                 element.Body = model.Body;
                 element.CategoryId = model.CategoryId;

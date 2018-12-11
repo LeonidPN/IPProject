@@ -158,7 +158,10 @@ namespace IPProject.Services
                     throw new Exception("Элемент не найден");
                 }
                 element.Title = model.Title;
-                element.ImageUrl = model.ImageUrl;
+                if (model.ImageUrl != null)
+                {
+                    element.ImageUrl = model.ImageUrl;
+                }
                 element.Description = model.Description;
                 context.SaveChanges();
                 return;

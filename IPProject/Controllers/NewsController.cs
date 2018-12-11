@@ -73,6 +73,7 @@ namespace IPProject.Controllers
                 List<News> news = service.GetListByCategory(id);
                 ViewBag.News = news;
                 ViewBag.Category = serviceC.GetElement(id).Title;
+                ViewBag.CategoryId = id;
             }
             catch (Exception ex)
             {
@@ -86,6 +87,33 @@ namespace IPProject.Controllers
                 return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
             }
             return View();
+        }
+
+        public ActionResult AddItems(int start, int count, int id)
+        {
+            try
+            {
+                NewsService service = new NewsService(Server.MapPath("~/Content/Upload/Entities/"));
+                List<News> news = service.GetListByCategory(id);
+                List<News> n = new List<News>();
+                for (int i = start; i < news.Count && count > 0; i++)
+                {
+                    count--;
+                    n.Add(news[i]);
+                }
+                return PartialView(n);
+            }
+            catch (Exception ex)
+            {
+                string message = "";
+                while (ex != null)
+                {
+                    message = ex.Message;
+                    ex = ex.InnerException;
+                }
+                message = message.Replace('\n', ' ');
+                return Redirect("/Message/MessageShow/?message=" + message + "&href=" + Request.Url);
+            }
         }
     }
 }

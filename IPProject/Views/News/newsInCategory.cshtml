@@ -7,20 +7,30 @@
     ViewBag.Title = "Новости по категории";
 }
 
-<div class="news_body">
+<div class="news_body" id="content">
     <h2>@ViewBag.Category</h2>
-    @if (ViewBag.News != null)
-    {
-        foreach (var n in ViewBag.News)
-        {
-            <div class="news_item">
-                <h3>@n.Title</h3>
-                <img src="~/Content/Upload/Images/@n.ImageUrl">
-                <p>
-                    @n.Description
-                </p>
-                <div class="news_item_go"><a href="/News/News/@n.Id">Подробнее</a></div>
-            </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    var curPos = 0;
+    function addItems(count) {
+        var body = $('#content');
+        var max = curPos + count;
+        $.ajax('http://localhost:50472/News/AddItems?start=' + curPos + '&count=' + count + '&id=' + @ViewBag.CategoryId, {
+            success: function (data) {
+                body.append(data);
+            }
+        });
+        curPos = max;
+    }
+
+    $(function () {
+        addItems(3);
+    });
+
+    window.onscroll = function () {
+        if (document.documentElement.scrollHeight - document.documentElement.scrollTop < document.documentElement.clientHeight + 50) {
+            addItems(3);
         }
     }
-</div>
+</script>

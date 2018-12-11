@@ -144,6 +144,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Database.mdf" />
+    <Content Include="App_Data\DatabaseN.mdf" />
+    <Content Include="App_Data\DatabaseN_log.ldf">
+      <DependentUpon>DatabaseN.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\Database_log.ldf">
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
@@ -195,6 +199,9 @@
     <Content Include="Views\Redaction\userAdd.cshtml" />
     <Content Include="Views\Redaction\userList.cshtml" />
     <Content Include="Views\Message\messageShow.cshtml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\News\addItems.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
